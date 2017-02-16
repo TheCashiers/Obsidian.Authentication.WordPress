@@ -1,5 +1,5 @@
 <?php
-    require("../Helper/webrequest.php");
+    require_once(ROOT_PATH."/Helper/webrequest.php");
     class TokenResourceOwnerCredential
     {
         private $request_uri;
@@ -41,6 +41,5 @@
                 }
             return true;
         }
-        
     }
 ?>

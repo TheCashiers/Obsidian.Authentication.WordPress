@@ -9,10 +9,14 @@ Author URI:  http://www.za-pt.org
 License:     Apache License 2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.html
 */
-require("./obsidian-auth-config.php");
-require("./Authentication/token-resource-owner-credential.php");
-require("./Authentication/jwt.php");
-if($obsidian_auth_config_auth_mode=="password")
+define("ROOT_PATH",__DIR__);
+require_once(ROOT_PATH."/Authentication/token-resource-owner-credential.php");
+require_once(ROOT_PATH."/Authentication/jwt.php");
+require_once(ROOT_PATH."/obsidian-auth-config.php");
+
+
+
+if(ObsidianAuthConfig::$auth_mode=="password")
     add_filter("authenticate","obsidian_client_auth_signon_passwordmode_handler",30,3);
 
 /*
@@ -21,15 +25,16 @@ if($obsidian_auth_config_auth_mode=="password")
 function obsidian_client_auth_signon_passwordmode_handler($user,$username,$password)
 {
     if($username==""&&$password=="") return null;
-    $password_cred = new TokenResourceOwnerCredential($obsidian_auth_config_password_uri);
+    $password_cred = new TokenResourceOwnerCredential(ObsidianAuthConfig::$password_uri);
     //authenticate in an Obsidian-based Server
-    $password_cred->authenticate($obsidian_auth_config_client_id,$obsidian_auth_config_client_secret,$username,$password,$obsidian_auth_config_login_scope);
+    $password_cred->authenticate(ObsidianAuthConfig::$client_id,ObsidianAuthConfig::$client_secret,$username,$password,ObsidianAuthConfig::$login_scope);
     if($password_cred->access_token=="") return null;
     $jwt = JsonWebToken::decode_jwt($password_cred->access_token);
     //get userinfo
-    $token_username = array_search("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",$jwt->custom_claims);
-    $token_email = array_search("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",$jwt->custom_claims);
+    $token_username = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+    $token_email = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
     //login
+    //if(strcasecmp($token_username,$username)==false) return null;
     $user_login = get_user_by("login",$token_username);
     //if user doesn't exist,create it.
     if($user_login!=null)
