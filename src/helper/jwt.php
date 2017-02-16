@@ -13,8 +13,8 @@
         *Decode an encoded JWT string
         *
         *@access public
-        *@param mixed $data An encoded JWT string
-        *@return a decoded jwt
+        *@param string $data An encoded JWT string
+        *@return json_web_token a decoded jwt
         */
         public static function decode_jwt($data)
         {
