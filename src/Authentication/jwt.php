@@ -47,6 +47,7 @@
                 }
             //set signature
             $rtn_jwt->sign_string = $data_array[2];
+            return $rtn_jwt;
         }
     }
 ?>
