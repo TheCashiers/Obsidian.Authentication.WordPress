@@ -1,0 +1,5 @@
+{
+    "require": {
+        "namshi/jose":"2.2.0"
+    }
+}
