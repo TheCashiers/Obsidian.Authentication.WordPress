@@ -1,5 +1,5 @@
 <?php
-    class ObsidianAuthConfig
+    class obsidian_auth_config
     {
         public static $auth_mode = "password";
         public static $password_uri = "http://localhost:3738/oauth20/token_resource_owner_credential";

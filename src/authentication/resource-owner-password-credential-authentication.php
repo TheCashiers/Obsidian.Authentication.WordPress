@@ -1,6 +1,6 @@
 <?php
-    require_once(ROOT_PATH."/Helper/webrequest.php");
-    class TokenResourceOwnerCredential
+    require_once(ROOT_PATH."/helper/webrequest.php");
+    class resource_owner_password_credential_authentication
     {
         private $request_uri;
         public $expire_in;
@@ -28,7 +28,8 @@
                 "grant_type"=>"password"
             );
             //post to Obsidian
-            $result_array = post_json($this->request_uri,$post_data);
+            $result_array = web_request_helper::post_json($this->request_uri,$post_data);
+            if($result_array==null) return false;
             //parse result
             foreach ($result_array as $key => $value)
                 switch ($key) {

@@ -1,5 +1,5 @@
 <?php
-    class JsonWebToken
+    class json_web_token
     {
         public $iss;
         public $sub;
@@ -18,7 +18,7 @@
         */
         public static function decode_jwt($data)
         {
-            $rtn_jwt = new JsonWebToken();
+            $rtn_jwt = new json_web_token();
             if(gettype($data) != "string") return $rtn_jwt;        
             $data_array = explode(".",$data);
             //invalid jwt string
