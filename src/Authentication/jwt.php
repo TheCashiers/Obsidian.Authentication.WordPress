@@ -43,7 +43,7 @@
                         $rtn_jwt->iat = date_create();
                         date_timestamp_set($rtn_jwt->iat,$value);
                         break;                    
-                    default:array_push($rtn_jwt->custom_claims,$key,$value);break;
+                    default:$rtn_jwt->custom_claims[$key]=$value;break;
                 }
             //set signature
             $rtn_jwt->sign_string = $data_array[2];

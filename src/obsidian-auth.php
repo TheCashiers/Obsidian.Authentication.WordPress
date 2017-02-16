@@ -30,7 +30,6 @@ function obsidian_client_auth_signon_passwordmode_handler($user,$username,$passw
     $token_username = array_search("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",$jwt->custom_claims);
     $token_email = array_search("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress",$jwt->custom_claims);
     //login
-    if(strcasecmp($token_username,$username)==false) return null;
     $user_login = get_user_by("login",$token_username);
     //if user doesn't exist,create it.
     if($user_login!=null)
