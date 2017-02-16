@@ -1,2 +1,3 @@
 # Ignore Composer Library
 src/vendor/
+src/composer.lock
