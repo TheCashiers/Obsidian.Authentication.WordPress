@@ -53,6 +53,14 @@
                                 ?>
                                 </td>
                             </tr>
+                            <tr>
+                                <th><label for="obsidian_auth_password_mode_prevent_user">Intercept WordPress Login Process in Password Grant</label></th>
+                                <td>
+                                    <label><input type="radio" name="obsidian_auth_password_mode_prevent_user" value="yes" <?php if(get_option("obsidian_auth_password_mode_prevent_user")=="yes") echo("checked=\"checked\""); ?>> <span>Yes</span></label>
+                                    <br/>
+                                    <label><input type="radio" name="obsidian_auth_password_mode_prevent_user" value="no"  <?php if(get_option("obsidian_auth_password_mode_prevent_user")=="no") echo("checked=\"checked\""); ?>> <span>No</span></label>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <?php submit_button(); ?>

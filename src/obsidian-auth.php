@@ -38,5 +38,6 @@ function register_obsidian_client_settings()
     register_setting("obsidian-client-setting-group","obsidian_auth_client_id");
     register_setting("obsidian-client-setting-group","obsidian_auth_client_secret");
     register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_uri");
+    register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_prevent_user");  
 }
 ?>

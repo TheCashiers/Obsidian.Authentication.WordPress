@@ -8,6 +8,9 @@ function obsidian_client_authentication_handler($user,$username,$password)
     $client_secret = get_option("obsidian_auth_client_secret");
     $login_scope = get_option("obsidian_auth_login_scope");
     $password_uri = get_option("obsidian_auth_password_mode_uri");
+    $intercept_login = get_option("obsidian_auth_password_mode_prevent_user");
+    //intercept
+    if(!is_wp_error($user)&&$intercept_login=="no") return $user;
     if($username==""&&$password=="") return $user;
     $password_auth = new resource_owner_password_credential_authentication($password_uri);
     //authenticate in an Obsidian-based Server
