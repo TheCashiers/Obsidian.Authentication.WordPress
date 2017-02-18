@@ -1,4 +1,4 @@
-<di class="wrap">
+<div class="wrap">
     <h1>Obsidian Authentication Plugin Options</h1>
     <form method="post" action="options.php">
         <?php settings_fields( "obsidian-client-setting-group" ); ?>

@@ -38,17 +38,16 @@
         */
         public static function authenticate_handler($user,$username,$password)
         {
-            $client_id = get_option("obsidian_auth_client_id");
-            $client_secret = get_option("obsidian_auth_client_secret");
+            $client = new obsidian_client(get_option("obsidian_auth_client_id"),get_option("obsidian_auth_client_secret"));
             $login_scope = get_option("obsidian_auth_login_scope");
             $password_uri = get_option("obsidian_auth_password_mode_uri");
             $intercept_login = get_option("obsidian_auth_password_mode_prevent_user");
             //intercept
             if(!is_wp_error($user)&&$intercept_login=="no") return $user;
             if($username==""&&$password=="") return $user;
-            $password_auth = new resource_owner_password_credential_authentication($password_uri);
+            $password_auth = new resource_owner_password_credential_authentication($password_uri,$client);
             //authenticate in an Obsidian-based Server
-            $auth_result = $password_auth->authenticate($client_id,$client_secret,$username,$password,$login_scope);
+            $auth_result = $password_auth->authenticate($username,$password,$login_scope);
             //if auth_result is false
             if($auth_result==false) return null;
             if($password_auth->access_token=="") return null;

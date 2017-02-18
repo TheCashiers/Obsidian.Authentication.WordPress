@@ -15,6 +15,8 @@ require_once(ROOT_PATH."/helper/jwt.php");
 require_once(ROOT_PATH."/hook-handler.php");
 require_once(ROOT_PATH."/views/view-controller.php");
 require_once(ROOT_PATH."/options/client-administrator-option-page.php");
+require_once(ROOT_PATH."/options/option-page.php");
+require_once(ROOT_PATH."/authentication/client.php");
 $auth_mode = get_option("obsidian_auth_grant_mode");
 /*setup hook for plugin installation*/
 register_activation_hook(__FILE__,"obsidian_hook_handler::register_activation_hook_handler");
@@ -24,11 +26,6 @@ register_deactivation_hook(__FILE__,"obsidian_hook_handler::register_deactivatio
 if($auth_mode=="password")
     add_filter("authenticate","obsidian_hook_handler::authenticate_handler",30,3);
 
-/*setup hook for client option page*/
-if(is_admin())
-{
-    $c_a_o_p = new client_administrator_option_page();
-    $c_a_o_p->enable_page();
-}
-
+/*enable option pages*/
+obsidian_option_page::enable_all();
 ?>

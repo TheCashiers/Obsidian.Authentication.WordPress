@@ -8,20 +8,21 @@
         public $access_token;
         public $refresh_token;
         public $authrentication_token;
-
-        public function __construct($request_url)
+        public $client;
+        public function __construct($request_url,$client)
         {
             $this->request_uri = $request_url;
+            $this->client = $client;
         }
         /*
         *Authenticate user info in an Obsidian-based server
         */
-        public function authenticate($client_id,$client_secret,$username,$password,$scope)
+        public function authenticate($username,$password,$scope)
         {
             //init postdata
             $post_data = array(
-                "client_id"=>$client_id,
-                "client_secret"=>$client_secret,
+                "client_id"=>$this->client->client_id,
+                "client_secret"=>$this->client->client_secret,
                 "scope"=>join(" ",$scope),
                 "username"=>$username,
                 "password"=>$password,
