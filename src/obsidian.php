@@ -23,8 +23,7 @@ register_activation_hook(__FILE__,"obsidian_hook_handler::register_activation_ho
 register_deactivation_hook(__FILE__,"obsidian_hook_handler::register_deactivation_hook_handler");
 
 /*setup hook for Resource Owner Password Credential Mode*/
-if($auth_mode=="password")
-    add_filter("authenticate","obsidian_hook_handler::authenticate_handler",30,3);
+add_filter("authenticate","obsidian_hook_handler::authenticate_handler",30,3);
 
 /*enable option pages*/
 obsidian_option_page::enable_all();
