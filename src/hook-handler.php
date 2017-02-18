@@ -61,6 +61,7 @@
             //if user doesn't exist,create it.
             if($user_login!=null)
                 return $user_login;
+            else
             {
                 $userdata = array(
                     "user_login" => $token_username,
