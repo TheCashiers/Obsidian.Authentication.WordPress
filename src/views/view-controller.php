@@ -1,7 +1,7 @@
 <?php
     class view_controller
     {
-        public static function obsidian_client_administration_create_page()
+        public static function client_administration_option_page()
         {
             include_once(ROOT_PATH."/views/client-option-page.php");
         }

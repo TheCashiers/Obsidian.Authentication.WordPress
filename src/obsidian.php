@@ -14,7 +14,7 @@ require_once(ROOT_PATH."/authentication/resource-owner-password-credential-authe
 require_once(ROOT_PATH."/helper/jwt.php");
 require_once(ROOT_PATH."/hook-handler.php");
 require_once(ROOT_PATH."/views/view-controller.php");
-
+require_once(ROOT_PATH."/options/client-administrator-option-page.php");
 $auth_mode = get_option("obsidian_auth_grant_mode");
 /*setup hook for plugin installation*/
 register_activation_hook(__FILE__,"obsidian_hook_handler::register_activation_hook_handler");
@@ -26,18 +26,9 @@ if($auth_mode=="password")
 
 /*setup hook for client option page*/
 if(is_admin())
-    add_action("admin_menu", "obsidian_client_create_page");
-function obsidian_client_create_page()
 {
-    add_options_page("Obsidian Authentication Plugin Option", "Obsidian Server Options", "administrator", "obsidian_client_menu", "view_controller::obsidian_client_administration_create_page");
-	add_action( "admin_init", "register_obsidian_client_settings" );
+    $c_a_o_p = new client_administrator_option_page();
+    $c_a_o_p->enable_page();
 }
-function register_obsidian_client_settings()
-{
-    register_setting("obsidian-client-setting-group","obsidian_auth_grant_mode");
-    register_setting("obsidian-client-setting-group","obsidian_auth_client_id");
-    register_setting("obsidian-client-setting-group","obsidian_auth_client_secret");
-    register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_uri");
-    register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_prevent_user");  
-}
+
 ?>
