@@ -23,8 +23,8 @@
 
         /*Implict Grant Information*/
         public $token_mode_request_url;
-
         /*Authorization Code Grant Information*/
-        public $code_mode_request_url;
+        public $code_mode_code_request_url;
+        public $code_mode_token_request_url;
     }
 ?>

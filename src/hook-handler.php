@@ -1,4 +1,5 @@
 <?php
+    require_once(ROOT_PATH."/oauth-controller.php");
     class obsidian_hook_handler
     {
         /* Handler for Installation*/
@@ -60,6 +61,17 @@
                     if(!is_wp_error($user_id)) return get_user_by("id",$user_id); else return null;
                 }
             }
+        }
+
+        /*Called when user browser a url*/
+        public static function init_handler()
+        {
+            $url = rtrim($_SERVER["REQUEST_URI"],"?".$_SERVER["QUERY_STRING"]);
+            if(strcasecmp($url,"/obsidian-auth/auth")==0)
+                obsidian_oauth_controller::auth_code_handler();
+            if(strcasecmp($url,"/obsidian-auth/token")==0)
+                obsidian_oauth_controller::code_handler();
+                        
         }
     }
 ?>
