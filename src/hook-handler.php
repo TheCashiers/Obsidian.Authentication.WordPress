@@ -8,6 +8,7 @@
         */
         public static function register_activation_hook_handler()
         {
+            add_option("obsidian_servers",null);
         }
 
         /*
@@ -26,7 +27,7 @@
         public static function authenticate_handler($user,$username,$password)
         {
             //get all Obsidian-based servers from database;
-            $servers = get_option("obsidian_servers");
+            $servers = json_decode(get_option("obsidian_servers"));
             if($servers == null) return $user;
             foreach ($servers as $value) {
                 //no input
@@ -36,7 +37,7 @@
                 //authenticate in a server
                 $client = new obsidian_client($value->client_id,$value->client_secret);
                 $password_auth = new resource_owner_password_credential_authentication($value->password_mode_request_url,$client);
-                $result = $password_auth->authenticate($username,$password,$value->scope_login);
+                $result = $password_auth->authenticate($username,$password,explode(" ",$value->scope_login));
                 //check result
                 if($result==false||!isset($password_auth->access_token)) return null;
                 //decode and get userinfo
