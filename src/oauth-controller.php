@@ -50,11 +50,14 @@
                 $users = get_users(array("meta_key"=>"obsidian_server_binding_id_".$server->server_name,"meta_value"=>$token_id));
                 $current_user = null;
                 if(count($users)>0)
-                    $current_user = $users;
+                    $current_user = $users[0];
                 else
                     wp_redirect(home_url()."/wp-admin/wp-login.php");
                 wp_set_current_user($current_user);
+                wp_set_auth_cookie($current_user->ID);
+                do_action("wp_login", $current_user->user_login);
                 wp_redirect(home_url()."/wp-admin/profile.php");
+                exit;
             }
             
         }
