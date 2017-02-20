@@ -1,4 +1,5 @@
 <?php
+    require_once(ROOT_PATH."/oauth-controller.php");
     class obsidian_hook_handler
     {
         /* Handler for Installation*/
@@ -30,6 +31,8 @@
             $servers = json_decode(get_option("obsidian_servers"));
             if($servers == null) return $user;
             foreach ($servers as $value) {
+                //if server grant is not password mode
+                if(($value->grant_mode)!="password") continue;
                 //no input
                 if($username==""&&$password=="") return $user;
                 //intercept
@@ -42,24 +45,38 @@
                 if($result==false||!isset($password_auth->access_token)) return null;
                 //decode and get userinfo
                 $jwt = json_web_token::decode_jwt($password_auth->access_token);
+                $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 $token_username = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
                 $token_email = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
                 //login to WordPress
-                $user_login = get_user_by("login",$token_username);
+                $users = get_users(array("meta_key"=>"obsidian_server_binding_id_".$value->server_name,"meta_value"=>$token_id));
                 //if user exist,login
-                if($user_login!=null)
-                    return $user_login;
-                else //if user doesn't exist,create it
+                if(count($users)>0)
+                    return $users[0];
+                elseif($value->allow_login_unbind_user_pasword_mode=="yes") //if there is a user with a same name in Obsidian server
                 {
-                        $userdata = array(
-                        "user_login" => $token_username,
-                        "user_pass"  => $password."_obsidian",
-                        "user_email" => $token_email
-                    );
-                    $user_id = wp_insert_user($userdata);
-                    if(!is_wp_error($user_id)) return get_user_by("id",$user_id); else return null;
+                    $user_login = get_user_by("login",$token_username);
+                    if($user_login!=null)
+                        update_user_meta($user_login->ID,"obsidian_server_binding_id_".$value->server_name,$token_id);
+                    return $user_login;
                 }
+                else //in Password mode, user must bind their obsidian user before login in.
+                    return null;
             }
+            //if no server,use WordPress internal login process
+            return $user;
+        }
+
+        /*Called when user browser a url*/
+        public static function init_handler()
+        {
+            $url = explode("?",$_SERVER["REQUEST_URI"])[0];
+            //$url = rtrim($_SERVER["REQUEST_URI"],"?".$_SERVER["QUERY_STRING"]);
+            if(strcasecmp($url,"/obsidian-auth/auth")==0)
+                obsidian_oauth_controller::auth_code_handler();
+            if(strcasecmp($url,"/obsidian-auth/token")==0)
+                obsidian_oauth_controller::code_handler();
+                        
         }
     }
 ?>

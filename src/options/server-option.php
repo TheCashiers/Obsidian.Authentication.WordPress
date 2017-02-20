@@ -16,15 +16,21 @@
         public $client_secret;
         public $scope_login;
 
+        /*Allow plugin to login with a user not existing in WordPress*/
+        public $allow_create_user;
+
+        /*Allow user to login with a user unbinded with Obsidian user*/
+        public $allow_login_unbind_user_pasword_mode;
+
         /*Resource Owner Password Credential Grant Information*/
-        
         public $password_mode_request_url;
         public $password_mode_intercept;
 
         /*Implict Grant Information*/
         public $token_mode_request_url;
-
+        
         /*Authorization Code Grant Information*/
-        public $code_mode_request_url;
+        public $code_mode_code_request_url;
+        public $code_mode_token_request_url;
     }
 ?>

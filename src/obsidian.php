@@ -17,13 +17,19 @@ require_once(ROOT_PATH."/views/view-controller.php");
 require_once(ROOT_PATH."/options/client-administrator-option-page.php");
 require_once(ROOT_PATH."/options/option-page.php");
 require_once(ROOT_PATH."/authentication/client.php");
-$auth_mode = get_option("obsidian_auth_grant_mode");
+
+//enable session
+if(!session_id()) session_start();
+
 /*setup hook for plugin installation*/
 register_activation_hook(__FILE__,"obsidian_hook_handler::register_activation_hook_handler");
 register_deactivation_hook(__FILE__,"obsidian_hook_handler::register_deactivation_hook_handler");
 
 /*setup hook for Resource Owner Password Credential Mode*/
 add_filter("authenticate","obsidian_hook_handler::authenticate_handler",30,3);
+
+/*setup hook into 'init' action to enable Authorization Code Mode and Implict Mode*/
+add_filter("init","obsidian_hook_handler::init_handler");
 
 /*enable option pages*/
 obsidian_option_page::enable_all();
