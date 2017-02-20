@@ -31,6 +31,8 @@
             $servers = json_decode(get_option("obsidian_servers"));
             if($servers == null) return $user;
             foreach ($servers as $value) {
+                //if server grant is not password mode
+                if($server->grant_mode!="password") continue;
                 //no input
                 if($username==""&&$password=="") return $user;
                 //intercept
@@ -61,12 +63,15 @@
                     if(!is_wp_error($user_id)) return get_user_by("id",$user_id); else return null;
                 }
             }
+            //if no server,use WordPress internal login process
+            return $user;
         }
 
         /*Called when user browser a url*/
         public static function init_handler()
         {
-            $url = rtrim($_SERVER["REQUEST_URI"],"?".$_SERVER["QUERY_STRING"]);
+            $url = explode("?",$_SERVER["REQUEST_URI"])[0];
+            //$url = rtrim($_SERVER["REQUEST_URI"],"?".$_SERVER["QUERY_STRING"]);
             if(strcasecmp($url,"/obsidian-auth/auth")==0)
                 obsidian_oauth_controller::auth_code_handler();
             if(strcasecmp($url,"/obsidian-auth/token")==0)

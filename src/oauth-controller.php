@@ -1,5 +1,6 @@
 <?php
     require_once(ROOT_PATH."/authentication/authorization-code-authentication.php");
+    require_once(ROOT_PATH."/authentication/implict-authentication.php");
     require_once(ROOT_PATH."/authentication/client.php");
     class obsidian_oauth_controller
     {
@@ -24,15 +25,27 @@
                 if($value->server_name==$server_name)
                     $server = $value;
             if($server==null) wp_redirect(home_url());
-            //get access token
-            $code = $_GET["code"];
-            $code_auth = new authorization_code_authentication(new obsidian_client($server->client_id,$server->client_secret));
-            $code_auth->token_request_url=$server->code_mode_token_request_url;
-            $code_auth->code_redirect_url=home_url()."/obsidian-auth/token";
-            $result = $code_auth->get_access_token($code);
-            if($result==false||!isset($code_auth->access_token)) wp_redirect(home_url());
+            //check server mode
+            if($server->grant_mode=="password") wp_redirect(home_url());
+            $access_token = null;
+            if($server->grant_mode=="code")
+            {
+                //get access token
+                $code = $_GET["code"];
+                $code_auth = new authorization_code_authentication(new obsidian_client($server->client_id,$server->client_secret));
+                $code_auth->token_request_url=$server->code_mode_token_request_url;
+                $code_auth->code_redirect_url=home_url()."/obsidian-auth/token";
+                $result = $code_auth->get_access_token($code);
+                if($result==false||!isset($code_auth->access_token)) wp_redirect(home_url());
+                $access_token = $code_auth->access_token;
+            }
+            if($server->grant_mode=="token")
+            {
+                $access_token = $_GET["access_token"];
+            }
+            if(!isset($access_token)) wp_redirect(home_url());
             //decode and get userinfo
-            $jwt = json_web_token::decode_jwt($code_auth->access_token);
+            $jwt = json_web_token::decode_jwt($access_token);
             $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
             //if binding user
             if($action=="bind")
@@ -86,11 +99,22 @@
             {
                 $_SESSION["obsidian_accessing_server"]=$server_name;
                 $_SESSION["obsidian_token_action"]=$action;
-                $auth_code = new authorization_code_authentication($client);
-                $auth_code->code_request_url = $server->code_mode_code_request_url;
-                $auth_code->code_redirect_url = home_url()."/obsidian-auth/token";
-                $url = $auth_code->generate_code_url(explode(" ",$server->scope_login));
-                header("Location:".$url);
+                $url = home_url();
+                if($server->grant_mode == "code")
+                {
+                    $auth_code = new authorization_code_authentication($client);
+                    $auth_code->code_request_url = $server->code_mode_code_request_url;
+                    $auth_code->code_redirect_url = home_url()."/obsidian-auth/token";
+                    $url = $auth_code->generate_code_url(explode(" ",$server->scope_login));
+                }
+                if($server->grant_mode == "token")
+                {
+                    $token_auth = new implict_authentication($client);
+                    $token_auth->redirect_url = home_url()."/obsidian-auth/token";
+                    $token_auth->request_url = $server->token_mode_request_url;
+                    $url = $token_auth->generate_token_url(explode(" ",$server->scope_login));
+                }
+                wp_redirect($url);
                 exit();
             }
             if($action=="unbind")
