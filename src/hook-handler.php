@@ -42,7 +42,11 @@
                 $password_auth = new resource_owner_password_credential_authentication($value->password_mode_request_url,$client);
                 $result = $password_auth->authenticate($username,$password,explode(" ",$value->scope_login));
                 //check result
-                if($result==false||!isset($password_auth->access_token)) return null;
+                if($result==false||!isset($password_auth->access_token))
+                    if($value->password_mode_intercept=="no")
+                        continue;
+                    else
+                        return null;
                 //decode and get userinfo
                 $jwt = json_web_token::decode_jwt($password_auth->access_token);
                 $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
@@ -61,7 +65,10 @@
                     return $user_login;
                 }
                 else //in Password mode, user must bind their obsidian user before login in.
-                    return null;
+                    if($value->password_mode_intercept=="no")
+                        continue;
+                    else
+                        return null;
             }
             //if no server,use WordPress internal login process
             return $user;

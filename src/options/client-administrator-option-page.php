@@ -17,19 +17,8 @@
         */
         public function create_page()
         {
-            add_options_page("Obsidian Authentication Plugin Client Option", "Obsidian Server Options", "administrator", "obsidian_client_menu", "view_controller::client_administration_option_page");
-            add_action( "admin_init", array($this,"register_settings" ));
-        }
-        /*
-        *  Register settings
-        */
-        public function register_settings()
-        {
-            register_setting("obsidian-client-setting-group","obsidian_auth_grant_mode");
-            register_setting("obsidian-client-setting-group","obsidian_auth_client_id");
-            register_setting("obsidian-client-setting-group","obsidian_auth_client_secret");
-            register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_uri");
-            register_setting("obsidian-client-setting-group","obsidian_auth_password_mode_prevent_user");  
+            add_menu_page( __("Authentication Servers List","obsidian-auth"), __("Obsidian Options","obsidian-auth"), "administrator", "obsidian_list_servers","view_controller::client_administrator_list_servers");
+            add_submenu_page( "obsidian_list_servers", __("Add new server","obsidian-auth"), __("Add new server","obsidian-auth") , "administrator", "obsidian_add_server","view_controller::client_administrator_add_server");
         }
     }
 ?>

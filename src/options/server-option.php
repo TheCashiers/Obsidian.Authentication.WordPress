@@ -32,5 +32,16 @@
         /*Authorization Code Grant Information*/
         public $code_mode_code_request_url;
         public $code_mode_token_request_url;
+
+        public static function get_server_by_name($name)
+        {
+            if(!is_string($name)) return null;
+            $servers = json_decode(get_option("obsidian_servers"));
+            if($servers==null) return null;
+            foreach ($servers as $value)
+                if($value->server_name==$name)
+                    return $value;
+            return null;
+        }
     }
 ?>
