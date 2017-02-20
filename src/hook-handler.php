@@ -53,6 +53,13 @@
                 //if user exist,login
                 if(count($users)>0)
                     return $users[0];
+                elseif($value->allow_login_unbind_user_pasword_mode=="yes") //if there is a user with a same name in Obsidian server
+                {
+                    $user_login = get_user_by("login",$token_username);
+                    if($user_login!=null)
+                        update_user_meta($user_login->ID,"obsidian_server_binding_id_".$value->server_name,$token_id);
+                    return $user_login;
+                }
                 else //in Password mode, user must bind their obsidian user before login in.
                     return null;
             }
