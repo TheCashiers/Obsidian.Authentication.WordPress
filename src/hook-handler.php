@@ -85,5 +85,16 @@
                 obsidian_oauth_controller::code_handler();
                         
         }
+
+        /*Called when render login form*/
+        public static function login_form_handler()
+        {
+            $servers = json_decode(get_option("obsidian_servers"));
+            foreach($servers as $server)
+            {
+                if(($server->grant_mode=="token")||($server->grant_mode=="code"))
+                printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=login"."\" style=\"margin-bottom:16px;float:none;\" >".__("Login with %s")."</a></p>"),$server->server_name);
+            }
+        }
     }
 ?>

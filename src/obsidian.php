@@ -31,6 +31,8 @@ add_filter("authenticate","obsidian_hook_handler::authenticate_handler",30,3);
 /*setup hook into 'init' action to enable Authorization Code Mode and Implict Mode*/
 add_filter("init","obsidian_hook_handler::init_handler");
 
+/*setup hook into 'login_form' action to insert login button*/
+add_action("login_form","obsidian_hook_handler::login_form_handler");
 /*enable option pages*/
 obsidian_option_page::enable_all();
 ?>
