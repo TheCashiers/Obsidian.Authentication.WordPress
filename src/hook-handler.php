@@ -93,8 +93,23 @@
             foreach($servers as $server)
             {
                 if(($server->grant_mode=="token")||($server->grant_mode=="code"))
-                printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=login"."\" style=\"margin-bottom:16px;float:none;\" >".__("Login with %s")."</a></p>"),$server->server_name);
+                printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=login"."\" style=\"margin-bottom:16px;float:none;\" >".__("Login with %s","obsdian-auth")."</a></p>"),$server->server_name);
             }
+        }
+
+        public static function edit_user_profile_handler()
+        {
+            echo("<h2 class=\"title\">".__("Obsidian Binding","obsidian-auth")."</h2>");
+            $servers = json_decode(get_option("obsidian_servers"));
+            $current_user = wp_get_current_user();
+            foreach($servers as $server)
+            {
+                if($server->grant_mode!="no")
+                    if(get_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name)==null)
+                        printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=bind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Bind %s account","obsidian-auth")."</a></p>"),$server->server_name);
+                    else
+                        printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=unbind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Unbind %s account","obsidian-auth")."</a></p>"),$server->server_name);
+            }            
         }
     }
 ?>

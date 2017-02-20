@@ -37,6 +37,10 @@ add_filter("init","obsidian_hook_handler::init_handler");
 
 /*setup hook into 'login_form' action to insert login button*/
 add_action("login_form","obsidian_hook_handler::login_form_handler");
+
+/*setup hook into 'user_profile_form' to insert profile binding*/
+add_action("show_user_profile", "obsidian_hook_handler::edit_user_profile_handler");
+add_action("edit_user_profile", "obsidian_hook_handler::edit_user_profile_handler");
 /*enable option pages*/
 obsidian_option_page::enable_all();
 ?>
