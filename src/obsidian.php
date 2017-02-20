@@ -8,6 +8,7 @@ Author:      ZA-PT
 Author URI:  http://www.za-pt.org
 License:     Apache License 2.0
 License URI: http://www.apache.org/licenses/LICENSE-2.0.html
+Text Domain :obsidian-auth
 */
 define("ROOT_PATH",__DIR__);
 require_once(ROOT_PATH."/authentication/resource-owner-password-credential-authentication.php");
@@ -20,6 +21,9 @@ require_once(ROOT_PATH."/authentication/client.php");
 
 //enable session
 if(!session_id()) session_start();
+
+/*load text domain form internationalization*/
+load_plugin_textdomain( "obsidian-auth", "", ROOT_PATH."/lang/" );
 
 /*setup hook for plugin installation*/
 register_activation_hook(__FILE__,"obsidian_hook_handler::register_activation_hook_handler");
