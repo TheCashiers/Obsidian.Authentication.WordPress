@@ -32,7 +32,7 @@
             if($servers == null) return $user;
             foreach ($servers as $value) {
                 //if server grant is not password mode
-                if($server->grant_mode!="password") continue;
+                if(($value->grant_mode)!="password") continue;
                 //no input
                 if($username==""&&$password=="") return $user;
                 //intercept
@@ -45,23 +45,16 @@
                 if($result==false||!isset($password_auth->access_token)) return null;
                 //decode and get userinfo
                 $jwt = json_web_token::decode_jwt($password_auth->access_token);
+                $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 $token_username = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
                 $token_email = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
                 //login to WordPress
-                $user_login = get_user_by("login",$token_username);
+                $users = get_users(array("meta_key"=>"obsidian_server_binding_id_".$value->server_name,"meta_value"=>$token_id));
                 //if user exist,login
-                if($user_login!=null)
-                    return $user_login;
-                else //if user doesn't exist,create it
-                {
-                        $userdata = array(
-                        "user_login" => $token_username,
-                        "user_pass"  => $password."_obsidian",
-                        "user_email" => $token_email
-                    );
-                    $user_id = wp_insert_user($userdata);
-                    if(!is_wp_error($user_id)) return get_user_by("id",$user_id); else return null;
-                }
+                if(count($users)>0)
+                    return $users[0];
+                else //in Password mode, user must bind their obsidian user before login in.
+                    return null;
             }
             //if no server,use WordPress internal login process
             return $user;

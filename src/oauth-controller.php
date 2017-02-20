@@ -47,6 +47,8 @@
             //decode and get userinfo
             $jwt = json_web_token::decode_jwt($access_token);
             $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            $token_username = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"];
+            $token_email = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
             //if binding user
             if($action=="bind")
             {
@@ -64,8 +66,21 @@
                 $current_user = null;
                 if(count($users)>0)
                     $current_user = $users[0];
+                elseif($server->allow_create_user=="yes")
+                {
+                    $userdata = array(
+                        "user_login" => str_replace(" ","",$server->server_name)."_".$token_username,
+                        "user_pass"  => md5_file(rand().$token_id)."_obsidian",
+                        "user_email" => $token_email,
+                        "user_nicename" => $token_username,
+                        "display_name" => $token_username
+                    );
+                    $user_id = wp_insert_user($userdata);
+                    update_user_meta($user_id,"obsidian_server_binding_id_".$server->server_name,$token_id);
+                    $current_user = get_user_by("id",$user_id);
+                }
                 else
-                    wp_redirect(home_url()."/wp-admin/wp-login.php");
+                    wp_redirect(home_url()."/wp-admin/wp-login.php");            
                 wp_set_current_user($current_user);
                 wp_set_auth_cookie($current_user->ID);
                 do_action("wp_login", $current_user->user_login);
@@ -115,15 +130,16 @@
                     $url = $token_auth->generate_token_url(explode(" ",$server->scope_login));
                 }
                 wp_redirect($url);
-                exit();
+                exit;
             }
             if($action=="unbind")
             {
                 $current_user = wp_get_current_user();
                 //if user hasn't login in
                 if($current_user->ID==0) wp_redirect(home_url());
-                update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,null);
-                wp_redirect(home_url()."/wp-admin/profile.php");             
+                delete_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name);
+                wp_redirect(home_url()."/wp-admin/profile.php");   
+                exit;          
             }
         }
     }
