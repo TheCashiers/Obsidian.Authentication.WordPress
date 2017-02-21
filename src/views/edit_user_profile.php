@@ -20,12 +20,12 @@
                     if(get_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name)==null)
                     {
                         if($server->grant_mode=="password")
-                            printf("<th><a onclick=\"bind_password_mode_user('".$server->server_name."','".home_url()."')\" class=\"button button-primary button-large\" style=\"text-align:center;\" >".__("Bind %s account","obsidian-auth")."</a></th>",$server->server_name);
+                            printf("<th><a onclick=\"bind_password_mode_user('".$server->server_name."','".home_url()."')\" class=\"button button-primary button-large\" style=\"text-align:center;\" >".__("Bind %s account","obsidian-auth")."</a></th>",$server->display_name);
                         else
-                            printf("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=bind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Bind %s account","obsidian-auth")."</a></p>",$server->server_name);
+                            printf("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=bind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Bind %s account","obsidian-auth")."</a></p>",$server->display_name);
                     }
                     else
-                        printf("<th><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=unbind\" style=\"text-align:center;\" >" . __("Unbind %s account","obsidian-auth") . "</a></th>" , $server->server_name);
+                        printf("<th><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=unbind\" style=\"text-align:center;\" >" . __("Unbind %s account","obsidian-auth") . "</a></th>" , $server->display_name);
                 }
                 if($server->grant_mode=="password")
                 {

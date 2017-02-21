@@ -6,7 +6,7 @@
     $owp_html = "";
     foreach($servers as $server)
         if($server->grant_mode=="password")
-            $op_html.="<option value=\"".$server->server_name."\">".$server->server_name."</option>";
+            $op_html.="<option value=\"".$server->server_name."\">".$server->display_name."</option>";
     if(get_option("obsidian_disable_internal_auth")=="no") $owp_html = "<option value=\"wp_internal\">".__("WordPress Internal Authentication","obsidian-auth")."</option>";
     if($op_html!="") echo($o_html.$owp_html.$op_html."</select></label></p>");
     //for token or code mode,show buttons bottom

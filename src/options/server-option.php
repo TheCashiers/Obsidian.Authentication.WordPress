@@ -15,7 +15,8 @@
         public $client_id;
         public $client_secret;
         public $scope_login;
-
+        public $display_name;
+        
         /*Allow plugin to login with a user not existing in WordPress*/
         public $allow_create_user;
 

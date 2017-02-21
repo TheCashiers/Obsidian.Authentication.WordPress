@@ -45,6 +45,7 @@
             }                   
         }
         if($edit_server->server_name==null)$edit_server->server_name = $_POST["server_name"];
+        $edit_server->display_name = $_POST["display_name"];
         $edit_server->grant_mode = $_POST["grant_mode"];
         $edit_server->client_id = $_POST["client_id"];
         $edit_server->client_secret = $_POST["client_secret"];
@@ -80,6 +81,10 @@
                 <tr>
                     <th scope="row"><label for="server_name"><?php _e("Server Name","obsidian-auth"); ?></label></th>
                     <td><input name="server_name" id="server_name" type="text" class="regular-text" <?php if($server!=null) echo("value=\"".$server->server_name."\""); ?> <?php if($server!=null) echo("disabled=\"disabled\""); ?> /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="display_name"><?php _e("Display Name","obsidian-auth"); ?></label></th>
+                    <td><input name="display_name" id="display_name" type="text" class="regular-text" <?php if($server!=null) echo("value=\"".$server->display_name."\""); ?> /></td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="grant_mode"><?php _e("Grant Mode","obsidian-auth"); ?></label></th>

@@ -6,6 +6,7 @@
         <table class="wp-list-table widefat fixed striped">
             <thead>
                 <tr>
+                    <th scope="col"><?php _e("Display Name","obsidian-auth"); ?></th>
                     <th scope="col"><?php _e("Server Name","obsidian-auth"); ?></th>
                     <td scope="col"><?php _e("Grant Mode","obsidian-auth"); ?></td>
                     <td scope="col"><?php _e("Client ID","obsidian-auth"); ?></td>
@@ -42,6 +43,7 @@
                                     "token"=>__("Implicit Grant","obsidian-auth"),
                                     "code"=>__("Authorization Code Grant","obsidian-auth")
                                     );
+                            echo("<td>".$server->display_name."</td>");       
                             echo("<td>".$db_grant_mode[$server->grant_mode]."</td>");
                             echo("<td>".$server->client_id."</td>");
                             echo("<td>".$server->client_secret."</td>");
