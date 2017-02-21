@@ -103,8 +103,9 @@
         /*Called when render admin menu*/
         public static function admin_menu_handler()
         {
-            add_menu_page( __("Authentication Servers List","obsidian-auth"), __("Obsidian Options","obsidian-auth"), "administrator", "obsidian_list_servers","view_controller::client_administrator_list_servers");
-            add_submenu_page( "obsidian_list_servers", __("Add new server","obsidian-auth"), __("Add new server","obsidian-auth") , "administrator", "obsidian_add_server","view_controller::client_administrator_add_server");
+            add_menu_page( __("Obsidian Options","obsidian-auth"), __("Obsidian Options","obsidian-auth"), "administrator", "obsidian_options","view_controller::client_administrator_option");
+            add_submenu_page( "obsidian_options", __("Servers List","obsidian-auth"), __("Servers List","obsidian-auth") , "administrator", "obsidian_list_servers","view_controller::client_administrator_list_servers");
+            add_submenu_page( "obsidian_options", __("Add new server","obsidian-auth"), __("Add new server","obsidian-auth") , "administrator", "obsidian_add_server","view_controller::client_administrator_add_server");
         }
     }
 ?>

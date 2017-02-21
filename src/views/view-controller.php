@@ -9,6 +9,10 @@
         {
             include_once(ROOT_PATH."/views/client_administrator_add_server.php");
         }
+        public static function client_administrator_option()
+        {
+            include_once(ROOT_PATH."/views/client_administrator_option.php");
+        }
         public static function login_form()
         {
             include_once(ROOT_PATH."/views/login_form.php");

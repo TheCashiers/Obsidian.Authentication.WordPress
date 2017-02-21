@@ -52,7 +52,7 @@
         $edit_server->allow_create_user = $_POST["allow_create_user"];
         $edit_server->allow_login_unbind_user_pasword_mode = $_POST["allow_login_unbind_user_pasword_mode"];
         $edit_server->password_mode_request_url = $_POST["password_mode_request_url"];
-        $edit_server->password_mode_intercept = $_POST["password_mode_intercept"];
+        //$edit_server->password_mode_intercept = $_POST["password_mode_intercept"];
         $edit_server->token_mode_request_url = $_POST["token_mode_request_url"];
         $edit_server->code_mode_code_request_url = $_POST["code_mode_code_request_url"];
         $edit_server->code_mode_token_request_url = $_POST["code_mode_token_request_url"];
@@ -135,15 +135,6 @@
                         <fieldset>
                             <label><input name="allow_login_unbind_user_pasword_mode" type="radio" value="yes" <?php if($server!=null&&$server->allow_login_unbind_user_pasword_mode=="yes") echo("checked=\"checked\""); ?> ><?php _e("Yes","obsidian-auth");?></label>
                             <label><input name="allow_login_unbind_user_pasword_mode" type="radio" value="no" <?php if($server!=null&&$server->allow_login_unbind_user_pasword_mode=="no") echo("checked=\"checked\""); ?> ><?php _e("No","obsidian-auth");?></label>
-                        </fieldset>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php _e("Intercept other login authentication","obsidian-auth"); ?></th>
-                    <td>
-                        <fieldset>
-                            <label><input name="password_mode_intercept" type="radio" value="yes" <?php if($server!=null&&$server->password_mode_intercept=="yes") echo("checked=\"checked\""); ?> ><?php _e("Yes","obsidian-auth");?></label>
-                            <label><input name="password_mode_intercept" type="radio" value="no" <?php if($server!=null&&$server->password_mode_intercept=="no") echo("checked=\"checked\""); ?> ><?php _e("No","obsidian-auth");?></label>
                         </fieldset>
                     </td>
                 </tr>

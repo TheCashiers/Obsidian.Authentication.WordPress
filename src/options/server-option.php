@@ -24,7 +24,7 @@
 
         /*Resource Owner Password Credential Grant Information*/
         public $password_mode_request_url;
-        public $password_mode_intercept;
+        //public $password_mode_intercept;
 
         /*Implict Grant Information*/
         public $token_mode_request_url;
