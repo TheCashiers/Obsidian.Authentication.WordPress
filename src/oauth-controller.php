@@ -129,6 +129,22 @@
                     $token_auth->request_url = $server->token_mode_request_url;
                     $url = $token_auth->generate_token_url(explode(" ",$server->scope_login));
                 }
+                if($server->grant_mode == "password")
+                {
+                    $current_user = wp_get_current_user();
+                    //if user hasn't login in
+                    if($current_user->ID==0) wp_redirect(home_url());
+                    $password_auth = new resource_owner_password_credential_authentication($server->password_mode_request_url,$client);
+                    $result = $password_auth->authenticate($current_user->user_login,$_GET["password"],explode(" ",$server->scope_login));
+                    if($result!=false&&isset($password_auth->access_token))
+                    {
+                        $jwt = json_web_token::decode_jwt($password_auth->access_token);
+                        $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+                        update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
+                    }
+                    wp_redirect(home_url()."/wp-admin/profile.php");
+                    exit;
+                }
                 wp_redirect($url);
                 exit;
             }
