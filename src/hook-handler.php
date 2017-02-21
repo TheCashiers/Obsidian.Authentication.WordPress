@@ -60,11 +60,23 @@
                 elseif($value->allow_login_unbind_user_pasword_mode=="yes") //if there is a user with a same name in Obsidian server
                 {
                     $user_login = get_user_by("login",$token_username);
+                    //if allow insert user
+                    if(($user_login==null)&&($value->allow_create_user=="yes"))
+                    {
+                        $userdata = array(
+                            "user_login" => str_replace(" ","",$value->server_name)."_".$token_username,
+                            "user_pass"  => md5_file(rand().$token_id)."_obsidian",
+                            "user_email" => $token_email,
+                            "user_nicename" => $token_username,
+                            "display_name" => $token_username
+                            );
+                        $user_login =get_user_by("id",wp_insert_user($userdata));
+                    }
                     if($user_login!=null)
                         update_user_meta($user_login->ID,"obsidian_server_binding_id_".$value->server_name,$token_id);
                     return $user_login;
                 }
-                else //in Password mode, user must bind their obsidian user before login in.
+                else
                     if($value->password_mode_intercept=="no")
                         continue;
                     else
