@@ -11,12 +11,9 @@ License URI: http://www.apache.org/licenses/LICENSE-2.0.html
 Text Domain :obsidian-auth
 */
 define("ROOT_PATH",__DIR__);
-require_once(ROOT_PATH."/authentication/resource-owner-password-credential-authentication.php");
 require_once(ROOT_PATH."/helper/jwt.php");
 require_once(ROOT_PATH."/hook-handler.php");
 require_once(ROOT_PATH."/views/view-controller.php");
-require_once(ROOT_PATH."/options/client-administrator-option-page.php");
-require_once(ROOT_PATH."/options/option-page.php");
 require_once(ROOT_PATH."/authentication/client.php");
 
 //enable session
@@ -41,6 +38,7 @@ add_action("login_form","obsidian_hook_handler::login_form_handler");
 /*setup hook into 'user_profile_form' to insert profile binding*/
 add_action("show_user_profile", "obsidian_hook_handler::edit_user_profile_handler");
 add_action("edit_user_profile", "obsidian_hook_handler::edit_user_profile_handler");
-/*enable option pages*/
-obsidian_option_page::enable_all();
+
+/*setup hook into 'admin_menu' to insert option page*/
+add_action("admin_menu", "obsidian_hook_handler::admin_menu_handler");
 ?>

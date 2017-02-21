@@ -1,5 +1,7 @@
 <?php
     require_once(ROOT_PATH."/oauth-controller.php");
+    require_once(ROOT_PATH."/views/view-controller.php");
+    require_once(ROOT_PATH."/authentication/resource-owner-password-credential-authentication.php");
     class obsidian_hook_handler
     {
         /* Handler for Installation*/
@@ -101,27 +103,20 @@
         /*Called when render login form*/
         public static function login_form_handler()
         {
-            $servers = json_decode(get_option("obsidian_servers"));
-            foreach($servers as $server)
-            {
-                if(($server->grant_mode=="token")||($server->grant_mode=="code"))
-                printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=login"."\" style=\"margin-bottom:16px;float:none;\" >".__("Login with %s","obsdian-auth")."</a></p>"),$server->server_name);
-            }
+            view_controller::login_form();
         }
 
+        /*Called when render user profile page*/
         public static function edit_user_profile_handler()
         {
-            echo("<h2 class=\"title\">".__("Obsidian Binding","obsidian-auth")."</h2>");
-            $servers = json_decode(get_option("obsidian_servers"));
-            $current_user = wp_get_current_user();
-            foreach($servers as $server)
-            {
-                if($server->grant_mode!="no")
-                    if(get_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name)==null)
-                        printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=bind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Bind %s account","obsidian-auth")."</a></p>"),$server->server_name);
-                    else
-                        printf(__("<p><a class=\"button button-primary button-large\" href=\"".home_url()."/obsidian-auth/auth?server_name=".$server->server_name."&action=unbind"."\" style=\"margin-bottom:16px;float:none;\" >".__("Unbind %s account","obsidian-auth")."</a></p>"),$server->server_name);
-            }            
+            view_controller::edit_user_profile();
+        }
+
+        /*Called when render admin menu*/
+        public static function admin_menu_handler()
+        {
+            add_menu_page( __("Authentication Servers List","obsidian-auth"), __("Obsidian Options","obsidian-auth"), "administrator", "obsidian_list_servers","view_controller::client_administrator_list_servers");
+            add_submenu_page( "obsidian_list_servers", __("Add new server","obsidian-auth"), __("Add new server","obsidian-auth") , "administrator", "obsidian_add_server","view_controller::client_administrator_add_server");
         }
     }
 ?>
