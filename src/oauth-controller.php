@@ -15,9 +15,17 @@
             //get accessing server
             $server_name = $_SESSION["obsidian_accessing_server"];
             $action = $_SESSION["obsidian_token_action"];
+            $user_id = $_SESSION["obsidian_editing_user_id"];
             $_SESSION["obsidian_accessing_server"]=null;
             $_SESSION["obsidian_token_action"]=null;
-            //
+            $_SESSION["obsidian_editing_user_id"]=null;
+            //admin can modify other user setting
+            $isadmin = in_array(wp_get_current_user()->roles,"administrator");
+            if(!isadmin&&($user_id!=(wp_get_current_user()->ID)))
+            {
+                wp_redirect(home_url());
+                exit;
+            }
             $server = null;
             $servers = json_decode(get_option("obsidian_servers"));
             if($servers==null) wp_redirect(home_url());
@@ -52,7 +60,7 @@
             //if binding user
             if($action=="bind")
             {
-                $current_user = wp_get_current_user();
+                $current_user = get_user_by("id",$user_id);
                 //if user hasn't login in
                 if($current_user->ID==0) wp_redirect(home_url());
                 update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
@@ -99,6 +107,14 @@
         */
         public static function auth_code_handler()
         {
+            //admin can modify other user setting
+            $isadmin = in_array(wp_get_current_user()->roles,"administrator");
+            if((!isadmin)&&(($_GET["user_id"])!=(wp_get_current_user()->ID)))
+            {
+                wp_redirect(home_url());
+                exit;
+            }
+            $user_id = $_GET["user_id"];
             $action = $_GET["action"];
             $server_name = $_GET["server_name"];
             $server = null;
@@ -114,6 +130,7 @@
             {
                 $_SESSION["obsidian_accessing_server"]=$server_name;
                 $_SESSION["obsidian_token_action"]=$action;
+                $_SESSION["obsidian_editing_user_id"]=$user_id;
                 $url = home_url();
                 if($server->grant_mode == "code")
                 {
@@ -131,7 +148,7 @@
                 }
                 if($server->grant_mode == "password")
                 {
-                    $current_user = wp_get_current_user();
+                    $current_user = get_user_by("id",$user_id);
                     //if user hasn't login in
                     if($current_user->ID==0) wp_redirect(home_url());
                     $password_auth = new resource_owner_password_credential_authentication($server->password_mode_request_url,$client);
@@ -150,7 +167,7 @@
             }
             if($action=="unbind")
             {
-                $current_user = wp_get_current_user();
+                $current_user = get_user_by("id",$user_id);
                 //if user hasn't login in
                 if($current_user->ID==0) wp_redirect(home_url());
                 delete_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name);
