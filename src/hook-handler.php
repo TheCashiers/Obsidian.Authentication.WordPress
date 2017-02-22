@@ -63,7 +63,7 @@
             if(($current_user==null)&&($server->allow_create_user=="yes"))
             {
                 $userdata = array(
-                    "user_login" => str_replace(" ","",$server->server_name)."_".$token_username."_".md5_file(rand()),
+                    "user_login" => str_replace(" ","",$server->server_name)."_".$token_username."_".rand(),
                     "user_pass"  => md5_file(rand().$token_id)."_obsidian",
                     "user_email" => $token_email,
                     "user_nicename" => $token_username,
