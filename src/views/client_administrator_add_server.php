@@ -25,6 +25,8 @@
     }
     if($_SERVER["REQUEST_METHOD"] == "POST") //update server
     {
+        if($_POST["server_name"]=="wp_internal") wp_die(__("Invalid Action: server name 'wp_internal' is not allowed","obsidian-auth"));
+        if(!isset($_POST["server_name"])||$_POST["server_name"]=="") wp_die(__("Invalid Action: server name must be set","obsidian-auth"));
         $servers = json_decode(get_option("obsidian_servers"));
         $edit_server = new server_option();      
         if($servers!=null)
