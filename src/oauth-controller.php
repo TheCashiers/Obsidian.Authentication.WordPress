@@ -65,7 +65,7 @@
                 if($current_user->ID==0) wp_redirect(home_url());
                 update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
                 //return to profile.php
-                wp_redirect(home_url()."/wp-admin/profile.php");
+                wp_redirect(home_url()."/wp-admin/user-edit.php?user_id=".$current_user->ID);
                 exit;
             }
             if($action=="login")
@@ -159,7 +159,7 @@
                         $token_id = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                         update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
                     }
-                    wp_redirect(home_url()."/wp-admin/profile.php");
+                    wp_redirect(home_url()."/wp-admin/user-edit.php?user_id=".$current_user->ID);
                     exit;
                 }
                 wp_redirect($url);
@@ -171,7 +171,7 @@
                 //if user hasn't login in
                 if($current_user->ID==0) wp_redirect(home_url());
                 delete_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name);
-                wp_redirect(home_url()."/wp-admin/profile.php");   
+                wp_redirect(home_url()."/wp-admin/user-edit.php?user_id=".$current_user->ID);
                 exit;          
             }
         }
