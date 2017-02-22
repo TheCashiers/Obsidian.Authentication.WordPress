@@ -71,13 +71,13 @@
             if($action=="login")
             {
                 $users = get_users(array("meta_key"=>"obsidian_server_binding_id_".$server->server_name,"meta_value"=>$token_id));
-                $current_user = null;
-                if(count($users)>0)
-                    $current_user = $users[0];
-                elseif($server->allow_create_user=="yes")
+                //if obsidian_allow_unbind_login_with_email is yes,search user with specified emailaddress
+                if(count($users)>0) $current_user = $users[0];
+                if(($current_user==null)&&(get_option("obsidian_allow_unbind_login_with_email")=="yes")) $current_user = get_user_by("email",$token_email);
+                if(($current_user==null)&&($server->allow_create_user=="yes"))
                 {
                     $userdata = array(
-                        "user_login" => str_replace(" ","",$server->server_name)."_".$token_username,
+                        "user_login" => str_replace(" ","",$server->server_name)."_".$token_username."_".rand(),
                         "user_pass"  => md5_file(rand().$token_id)."_obsidian",
                         "user_email" => $token_email,
                         "user_nicename" => $token_username,
@@ -87,8 +87,6 @@
                     update_user_meta($user_id,"obsidian_server_binding_id_".$server->server_name,$token_id);
                     $current_user = get_user_by("id",$user_id);
                 }
-                else
-                    wp_redirect(home_url()."/wp-admin/wp-login.php");            
                 wp_set_current_user($current_user);
                 wp_set_auth_cookie($current_user->ID);
                 do_action("wp_login", $current_user->user_login);

@@ -13,6 +13,8 @@
         public static function register_activation_hook_handler()
         {
             add_option("obsidian_servers",null);
+            add_option("obsidian_disable_internal_auth","no");
+            add_option("obsidian_allow_unbind_login_with_email","no");
         }
 
         /*
@@ -21,6 +23,8 @@
         public static function register_deactivation_hook_handler()
         {
             delete_option("obsidian_servers");
+            delete_option("obsidian_disable_internal_auth");
+            delete_option("obsidian_allow_unbind_login_with_email");
         }
 
         /* Handler for authenticate*/
@@ -52,28 +56,25 @@
             $token_email = $jwt->custom_claims["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"];
             //login to WordPress
             $users = get_users(array("meta_key"=>"obsidian_server_binding_id_".$server->server_name,"meta_value"=>$token_id));
-            //if user exist,login
-            if(count($users)>0)
-                return $users[0];
-            elseif($server->allow_login_unbind_user_pasword_mode=="yes") //if there is a user with a same name in Obsidian server
+            
+            if(count($users)>0) $current_user = $users[0];
+            if(($current_user==null)&&(get_option("obsidian_allow_unbind_login_with_email")=="yes")) $current_user = get_user_by("email",$token_email);
+            if(($current_user==null)&&($server->allow_login_unbind_user_pasword_mode=="yes")) $current_user = get_user_by("login",$token_username);
+            if(($current_user==null)&&($server->allow_create_user=="yes"))
             {
-                $user_login = get_user_by("login",$token_username);
-                //if allow insert user
-                if(($user_login==null)&&($server->allow_create_user=="yes"))
-                {
-                    $userdata = array(
-                        "user_login" => str_replace(" ","",$server->server_name)."_".$token_username,
-                        "user_pass"  => md5_file(rand().$token_id)."_obsidian",
-                        "user_email" => $token_email,
-                        "user_nicename" => $token_username,
-                        "display_name" => $token_username
-                        );
-                    $user_login =get_user_by("id",wp_insert_user($userdata));
-                }
-                if($user_login!=null)
-                    update_user_meta($user_login->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
-                return $user_login;
-            }            
+                $userdata = array(
+                    "user_login" => str_replace(" ","",$server->server_name)."_".$token_username."_".md5_file(rand()),
+                    "user_pass"  => md5_file(rand().$token_id)."_obsidian",
+                    "user_email" => $token_email,
+                    "user_nicename" => $token_username,
+                    "display_name" => $token_username
+                    );
+                $user_id = wp_insert_user($userdata);
+                $current_user = get_user_by("id",$user_id);
+            }
+            if($current_user!=null)
+                update_user_meta($current_user->ID,"obsidian_server_binding_id_".$server->server_name,$token_id);
+            return $current_user;         
         }
 
         /*Called when user browser a url*/
