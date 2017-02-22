@@ -26,8 +26,8 @@
                             echo("<tr>");
                             ?>
                             <th>
-                                <?php echo($server->server_name); ?>
-                                <div class="row-action">
+                                <strong><a href="<?php echo(admin_url()."admin.php?page=obsidian_add_server&server_name=".$server->server_name); ?>"><?php echo($server->server_name); ?></a></strong>
+                                <div class="row-actions">
                                     <span class="edit">
                                         <a href="<?php echo(admin_url()."admin.php?page=obsidian_add_server&server_name=".$server->server_name); ?>"><?php _e("Edit","obsidian-auth"); ?></a> | 
                                     </span>
