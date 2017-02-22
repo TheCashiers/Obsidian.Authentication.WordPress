@@ -5,9 +5,9 @@
         <a class="add-new-h2" href="<?php echo admin_url("admin.php?page=obsidian_add_server"); ?>"><?php _e("Add new server", "obsidian-auth" ) ;?></a>
         <table class="wp-list-table widefat fixed striped">
             <thead>
-                <tr>
-                    <th scope="col"><?php _e("Display Name","obsidian-auth"); ?></th>
+                <tr>              
                     <th scope="col"><?php _e("Server Name","obsidian-auth"); ?></th>
+                    <th scope="col"><?php _e("Display Name","obsidian-auth"); ?></th>
                     <td scope="col"><?php _e("Grant Mode","obsidian-auth"); ?></td>
                     <td scope="col"><?php _e("Client ID","obsidian-auth"); ?></td>
                     <td scope="col"><?php _e("Client Secret","obsidian-auth"); ?></td>
