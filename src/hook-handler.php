@@ -34,6 +34,8 @@
         */
         public static function authenticate_handler($user,$username,$password)
         {
+            //prevent post when render the page
+            if($username==""&&$password=="") return $user;
             //get all Obsidian-based servers from database;
             $servers = json_decode(get_option("obsidian_servers"));
             if($servers == null) return $user;
