@@ -1,0 +1,194 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: obsidian-auth\n"
+"POT-Creation-Date: 2017-02-27 21:42+0800\n"
+"PO-Revision-Date: 2017-02-27 21:49+0800\n"
+"Last-Translator: \n"
+"Language-Team: ZAPT <ZAPT>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: hook-handler.php:107 views/client_administrator_option.php:10
+msgid "Obsidian Options"
+msgstr "Obsidian设置"
+
+#: hook-handler.php:108
+msgid "Servers List"
+msgstr "服务器列表"
+
+#: hook-handler.php:109 views/client_administrator_add_server.php:78
+#: views/client_administrator_list_servers.php:5
+msgid "Add new server"
+msgstr "添加新服务器"
+
+#: views/client_administrator_add_server.php:48
+msgid "Invalid Action: server name 'wp_internal' is not allowed"
+msgstr "非法操作：服务器名称'wp_internal'不可用"
+
+#: views/client_administrator_add_server.php:49
+msgid "Invalid Action: server name must be set"
+msgstr "非法操作：未指定服务器名称"
+
+#: views/client_administrator_add_server.php:74
+msgid "Edit authentication server"
+msgstr "编辑验证服务器"
+
+#: views/client_administrator_add_server.php:76
+msgid "Add authentication server"
+msgstr "添加验证服务器"
+
+#: views/client_administrator_add_server.php:84
+#: views/client_administrator_list_servers.php:9
+msgid "Server Name"
+msgstr "服务器名称"
+
+#: views/client_administrator_add_server.php:88
+#: views/client_administrator_list_servers.php:10
+msgid "Display Name"
+msgstr "显示名称"
+
+#: views/client_administrator_add_server.php:92
+#: views/client_administrator_list_servers.php:11
+msgid "Grant Mode"
+msgstr "验证模式"
+
+#: views/client_administrator_add_server.php:97
+#: views/client_administrator_list_servers.php:41
+msgid "Disabled"
+msgstr "禁用"
+
+#: views/client_administrator_add_server.php:98
+#: views/client_administrator_list_servers.php:42
+msgid "Resource Owner Password Credentials Grant"
+msgstr "密码模式"
+
+#: views/client_administrator_add_server.php:99
+#: views/client_administrator_list_servers.php:43
+msgid "Implicit Grant"
+msgstr "简化模式"
+
+#: views/client_administrator_add_server.php:100
+#: views/client_administrator_list_servers.php:44
+msgid "Authorization Code Grant"
+msgstr "授权码模式"
+
+#: views/client_administrator_add_server.php:114
+#: views/client_administrator_list_servers.php:12
+msgid "Client ID"
+msgstr "Client ID"
+
+#: views/client_administrator_add_server.php:118
+#: views/client_administrator_list_servers.php:13
+msgid "Client Secret"
+msgstr "Client Secret"
+
+#: views/client_administrator_add_server.php:122
+msgid "Login Scope"
+msgstr "登录用Scope"
+
+#: views/client_administrator_add_server.php:126
+msgid "Allow not existing user to Login"
+msgstr "是否允许在登录时创建用户"
+
+#: views/client_administrator_add_server.php:129
+#: views/client_administrator_add_server.php:143
+#: views/client_administrator_option.php:18
+#: views/client_administrator_option.php:28
+msgid "Yes"
+msgstr "是"
+
+#: views/client_administrator_add_server.php:130
+#: views/client_administrator_add_server.php:144
+#: views/client_administrator_option.php:19
+#: views/client_administrator_option.php:29
+msgid "No"
+msgstr "否"
+
+#: views/client_administrator_add_server.php:136
+msgid "Resource Owner Password Credential Mode"
+msgstr "密码模式"
+
+#: views/client_administrator_add_server.php:140
+msgid "Allow unbind user to login"
+msgstr "允许未绑定的用户登录"
+
+#: views/client_administrator_add_server.php:149
+#: views/client_administrator_add_server.php:158
+msgid "Request URL"
+msgstr "请求URL"
+
+#: views/client_administrator_add_server.php:154
+msgid "Implict Mode"
+msgstr "简化模式"
+
+#: views/client_administrator_add_server.php:163
+msgid "Authorization Code Mode"
+msgstr "授权码模式"
+
+#: views/client_administrator_add_server.php:167
+msgid "Acquire Code Request URL"
+msgstr "获取授权码的请求URL"
+
+#: views/client_administrator_add_server.php:171
+msgid "Acquire Token Request URL"
+msgstr "获取令牌的请求URL"
+
+#: views/client_administrator_list_servers.php:4
+msgid "Authentication Servers List"
+msgstr "验证服务器列表"
+
+#: views/client_administrator_list_servers.php:21
+msgid "No Server"
+msgstr "没有服务器"
+
+#: views/client_administrator_list_servers.php:32
+msgid "Edit"
+msgstr "编辑"
+
+#: views/client_administrator_list_servers.php:35
+msgid "Delete"
+msgstr "删除"
+
+#: views/client_administrator_option.php:15
+msgid ""
+"Disable WordPress internal authentication if a Resource Owner Password "
+"Credential mode server is available"
+msgstr "在有可用的密码模式服务器时禁用WordPress内置验证"
+
+#: views/client_administrator_option.php:25
+msgid "Allow unbind user login with same email"
+msgstr "允许未绑定的用户登录到相同邮箱地址的WordPress用户"
+
+#: views/edit_user_profile.php:1
+msgid "Obsidian Binding"
+msgstr "Obsidian绑定"
+
+#: views/edit_user_profile.php:23 views/edit_user_profile.php:25
+#, php-format
+msgid "Bind %s account"
+msgstr "绑定%s账户"
+
+#: views/edit_user_profile.php:28
+#, php-format
+msgid "Unbind %s account"
+msgstr "解除%s账号绑定"
+
+#: views/login_form.php:4
+msgid "Authentication Server"
+msgstr "验证服务器"
+
+#: views/login_form.php:10
+msgid "WordPress Internal Authentication"
+msgstr "WordPress内置验证"
+
+#: views/login_form.php:18
+#, php-format
+msgid "Login with %s"
+msgstr "使用%s账户登录"
