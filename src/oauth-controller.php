@@ -21,7 +21,7 @@
             $_SESSION["obsidian_token_action"]=null;
             $_SESSION["obsidian_editing_user_id"]=null;
             //admin can modify other user setting
-            $isadmin = in_array(wp_get_current_user()->roles,"administrator");
+            $isadmin = in_array(wp_get_current_user()->roles,array("administrator"));
             if(!isadmin&&($user_id!=(wp_get_current_user()->ID)))
             {
                 wp_redirect(home_url());
@@ -100,7 +100,7 @@
         public static function auth_code_handler()
         {
             //admin can modify other user setting
-            $isadmin = in_array(wp_get_current_user()->roles,"administrator");
+            $isadmin = in_array(wp_get_current_user()->roles,array("administrator"));
             if((!isadmin)&&(($_GET["user_id"])!=(wp_get_current_user()->ID)))
             {
                 wp_redirect(home_url());

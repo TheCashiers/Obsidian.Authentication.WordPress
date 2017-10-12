@@ -1,4 +1,5 @@
 <?php
+	require_once(ROOT_PATH."/helper/webrequest.php");
     class authorization_code_authentication
     {
         public $code_request_url;

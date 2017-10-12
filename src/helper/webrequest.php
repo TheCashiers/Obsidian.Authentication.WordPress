@@ -14,6 +14,7 @@
                 "Content-Length: " . strlen($post_data_json))
             );
             $output = curl_exec($ch);
+            //die($uri);
             return json_decode($output,true);
         }
     }
